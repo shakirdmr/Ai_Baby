@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+  <input id="input" placeholder="Ask something" />
+  <button onclick="ask()">Ask</button>
+  <pre id="output"></pre>
+
+  
+  <script>
+
+    const input  = document.getElementById("input");
+    const out  = document.getElementById("output");
+
+    async function oLlamaRequest(prompt){
+
+      
+        const reposneOfAi = await fetch("http://localhost:11434/api/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ model: "llama3:latest", prompt, stream: false })
+        });
+
+        const data = await reposneOfAi.json();
+        out.innerHTML = data.response;
+
+        console.log(data.response)
+
+    }
+
+    function ask(){
+        const prompt  = input.value;
+        console.log("ASKING AI ",prompt)
+
+        oLlamaRequest(prompt)
+    }
+
+  </script>
+
+
+</body>
+</html>
